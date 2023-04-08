@@ -1,5 +1,4 @@
 const { MongoClient } = require('mongodb');
-const { MongoMemoryServer } = require('mongodb-memory-server');
 const express = require("express");
 const bodyParser = require('body-parser');
 
@@ -12,27 +11,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT || global.gConfig.exposedPort;
-const MONGO_CONN_URI = process.env.MONGO_CONN_URI;
-const USE_IN_MEMORY_GRID = process.env.USE_IN_MEMORY_GRID;
-
-// Fail fast of neither MONGO_CONN_URI nor USE_IN_MEMORY_GRID is provided
-if ((! MONGO_CONN_URI) && (! USE_IN_MEMORY_GRID)) throw new Error(" Neither MONGO_CONN_URI is defines nor USE_IN_MEMORY_GRID flag is set")
-
-
-let mongoMemoryServer = new MongoMemoryServer();
-const getDBUriLive =  () => new Promise((resolve, reject) => resolve(MONGO_CONN_URI));
-const getDBUriInMemory  = async () => await mongoMemoryServer.start()
-                                                          .then(() => console.log("Starting In Memory Mongo Server "))
-                                                          .then(() => mongoMemoryServer.getUri());
-/**
- * Returns a promise of Mongo URI based on flag UNIT_TEST.
- * <p>
- *     if MONGO_CONN_URI  is provided  URI provided in Mongo Connection URI is returned pointing to running instance of Mongo <br>
- *     else In-Memory Mongo Instance is created abd URI is returned
- *  </p>
- * @type {{(): Promise<string>, (): Promise<unknown>}}
- */
-const getDBUri =  (USE_IN_MEMORY_GRID) ?   getDBUriInMemory : getDBUriLive;
+const MONGO_CONN_URI = process.env.MONGO_CONN_URI || config.database.connectionUrl
+const getDBUri =  () => new Promise((resolve, reject) => resolve(MONGO_CONN_URI));
 
 /**
  * call getDBUri, then use MongoClient to connect to Mongo Database based on URI
@@ -41,11 +21,13 @@ const getDBUri =  (USE_IN_MEMORY_GRID) ?   getDBUriInMemory : getDBUriLive;
  * </p>
  * @type {Promise<Collection<Document>>}
  */
+console.log(' MONGO_CONN_URI ' , MONGO_CONN_URI);
 const collection = getDBUri()
-    .then(x => { console.log(x); return x})
+                  .then(x => { console.log('connectin to mongo uri ', x); return x})
                   .then(uri => MongoClient.connect(uri, { useNewUrlParser: true })
                   .then(conn => conn.db(config.database.name))
                   .then(db => db.collection(config.database.collection)));
+
 collection.then(c => console.log("Mongo ", c.dbName , c.collectionName));
 
 
@@ -55,6 +37,7 @@ app.listen(PORT, () => {
 
 
 app.post('/getRecords', (req, res) => {
+  console.log("/getRecords ", req);
   var query = { email: 'eerr@ssss.com' };
   var limit = 10;
   if (req.body.limit && req.body.limit < 51) {

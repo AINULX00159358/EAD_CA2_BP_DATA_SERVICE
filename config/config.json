@@ -6,6 +6,7 @@
 	},
     "database": {
          "name": "bp_data",
-         "collection": "db_record"
+         "collection": "db_record",
+         "connectionUrl": "mongodb://localhost:27017"
     }
 }
