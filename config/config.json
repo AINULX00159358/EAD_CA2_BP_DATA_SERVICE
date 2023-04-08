@@ -1,0 +1,11 @@
+{
+	"development": {
+        "config_id": "development",
+        "app_name": "BP Data Service",
+        "exposedPort": "43256"
+	},
+    "database": {
+         "name": "bp_data",
+         "collection": "db_record"
+    }
+}
