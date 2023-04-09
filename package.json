@@ -1,8 +1,8 @@
 {
   "name": "bp_web_app",
   "version": "1.0.0",
-  "description": "BP DATA Service",
-  "author": "Ainul Habib>",
+  "description": "BP DATA Service, EAD CA2 2023",
+  "author": "Ainul Habib",
   "main": "bpdataservice.js",
   "scripts": {
     "start": "node bpdataservice.js"

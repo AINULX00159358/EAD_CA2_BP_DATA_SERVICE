@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bpdata-app
+  labels:
+    app: bpdata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bpdata
+  template:
+    metadata:
+      labels:
+        app: bpdata
+    spec:
+      containers:
+        - image: eadca2/bpdataservice:v1
+          name: bpdataapp
+          ports:
+            - containerPort: 43256
+          env:
+            - name: MONGO_CONN_URI
+              value: "mongodb://mongodb-service:27017"

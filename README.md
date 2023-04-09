@@ -16,8 +16,8 @@ Sample FE code for Services for EAD CA1
  - Can access code on http://localhost:22137
  - 22137 can be changed in /config/config.json property "exposedPort"
 
-5. docker rmi -f $(docker images -q dbdataservice)
+5. docker rmi -f $(docker images -q bpdataservice)
 
-6. docker build --no-cache --tag dbdataservice:CA2_v1 .
+6. docker build --no-cache -t eadca2/bpdataservice:v1 .
 
-7. docker run --name dbdataservice -p 43256:43256 -d -e "MONGO_CONN_URI=mongodb://172.17.0.2:27017" dbdataservice:CA2_v1
+7. docker run --name bpdataservice -p 43256:43256 -d -e "MONGO_CONN_URI=mongodb://172.17.0.2:27017" eadca2/bpdataservice:v1

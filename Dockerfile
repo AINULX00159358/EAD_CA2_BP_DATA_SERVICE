@@ -1,4 +1,3 @@
-#FROM node:10.15.1
 FROM node:14.21.2
 
 # Create dir for app code inside image => working dir for app
@@ -20,9 +19,6 @@ COPY . .
 
 # App binds to port 22137 - the EXPOSE instruction maps it to the docker daemon
 EXPOSE 43256
-
-ENV MONGOMS_DOWNLOAD_URL=https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1804-4.2.8.tgz
-ENV MONGOMS_VERSION=4.2.8
 
 # Will run node fe-server.js as defined in package.json
 CMD [ "npm", "start" ]

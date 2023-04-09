@@ -35,6 +35,9 @@ app.listen(PORT, () => {
   console.log("Server running on port "+ PORT);
 });
 
+app.get('/health', (req, res) => {
+     collection.then(c=> c.stats()).then(r => res.json(r));
+});
 
 app.post('/getRecords', (req, res) => {
   console.log("/getRecords ", req);
