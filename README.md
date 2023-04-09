@@ -20,4 +20,4 @@ Sample FE code for Services for EAD CA1
 
 6. docker build --no-cache --tag dbdataservice:CA2_v1 .
 
-7. docker run --name dbdataservice -p 43256:43256 -e "MONGO_CONN_URI=mongodb://172.17.0.2:27017" dbdataservice:CA2_v1
+7. docker run --name dbdataservice -p 43256:43256 -d -e "MONGO_CONN_URI=mongodb://172.17.0.2:27017" dbdataservice:CA2_v1

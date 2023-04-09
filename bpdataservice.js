@@ -43,7 +43,7 @@ app.post('/getRecords', (req, res) => {
   if (req.body.limit && req.body.limit < 51) {
     limit = req.body.limit
   }
-  collection.then(c => c.find(query).limit(limit).maxTimeMS(1000).toArray().then((result, error) => {
+  collection.then(c => c.find(query).limit(limit).sort({'timestamp': -1}).maxTimeMS(1000).toArray().then((result, error) => {
       res.status(200).json(result);
   }));
 });
