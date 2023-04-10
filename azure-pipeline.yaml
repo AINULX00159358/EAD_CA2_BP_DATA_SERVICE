@@ -42,6 +42,7 @@ steps:
         $(tag)
   # Package and deploy Helm charts v0
   - task: HelmDeploy@0
+    displayName: Build and push an Helm Package to container registry
     inputs:
       connectionType: 'Azure Resource Manager'
       # Azure Container Registry
