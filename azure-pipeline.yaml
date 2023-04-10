@@ -72,5 +72,6 @@ steps:
       chartType: 'FilePath'
       chartPath: '$(Build.SourcesDirectory)/helm'
       chartVersion: '1.0.0'
-      releaseName: 'bpdataservice'
+      force: true
+    #  releaseName: 'bpdataservice'
 
