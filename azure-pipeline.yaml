@@ -42,15 +42,6 @@ steps:
         $(tag)
   # Package and deploy Helm charts v0
   - task: HelmDeploy@0
-    displayName: Build and push an Helm Package to container registry
     inputs:
-      connectionType: 'Azure Resource Manager'
-      # Azure Container Registry
-      azureSubscriptionForACR: 'bc2aadcc-1517-44b8-9314-ea3f6c496a86'
-      azureResourceGroupForACR: 'k8s-resource-group'
-      azureContainerRegistry: 'ainhabacr.azurecr.io'
-      # Commands
       command: 'package'
-      chartType: 'FilePath'
-      chartPath: $(Build.SourcesDirectory)/helm
-      save: true
+      chartPath: '$(Build.SourcesDirectory)/helm'
