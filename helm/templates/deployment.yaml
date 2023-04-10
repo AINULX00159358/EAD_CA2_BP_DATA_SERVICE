@@ -15,7 +15,7 @@ spec:
         app: bpdata
     spec:
       containers:
-        - image: eadca2/bpdataservice:v1
+        - image: ainhabacr.azurecr.io/eadca2/bpdataservice:v1
           name: bpdataapp
           ports:
             - containerPort: 43256
