@@ -40,8 +40,8 @@ app.get('/health', (req, res) => {
 });
 
 app.post('/getRecords', (req, res) => {
-  console.log("/getRecords ", req);
-  var query = { email: 'eerr@ssss.com' };
+  console.log("/getRecords ", req.body.email);
+  var query = { email: req.body.email };
   var limit = 10;
   if (req.body.limit && req.body.limit < 51) {
     limit = req.body.limit
