@@ -46,9 +46,9 @@ steps:
     inputs:
       connectionType: 'Azure Resource Manager'
       # Azure Container Registry
-      azureSubscriptionForACR: ${azureACRSubscription}
-      azureResourceGroupForACR: ${azureACRResourceGroup}
-      azureContainerRegistry: ${containerRegistry}
+      azureSubscriptionForACR: '7263e463-da66-4888-a897-f34f5acea14b'
+      azureResourceGroupForACR: 'k8s-resource-group'
+      azureContainerRegistry: 'ainhabacr.azurecr.io'
       # Commands
       command: 'package'
       chartType: 'FilePath'
