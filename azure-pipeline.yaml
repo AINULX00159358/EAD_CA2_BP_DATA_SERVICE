@@ -61,10 +61,8 @@ steps:
       command: 'package'
       chartPath: '$(Build.SourcesDirectory)/helm'
       save: true
-   - bash: |
+  - bash: |
         cat $(Build.SourcesDirectory)/bpdataservice.js
-   #    ls -l $(Build.ArtifactStagingDirectory)
-   #    helm push $(Build.ArtifactStagingDirectory)/bpdataservice-1.0.0.tgz oci://$(ACR.Name).azurecr.io/charts/
   - task: HelmDeploy@0
     displayName: 'Helm INSTALL'
     inputs:
