@@ -42,7 +42,14 @@ steps:
       containerRegistry: $(dockerRegistryServiceConnection)
       tags: |
         $(tag)
-  # Package and deploy Helm charts v0  
+  # Package and deploy Helm charts v0
+  - task: HelmDeploy@0
+    displayName: 'Package the helm chart'
+    inputs:
+      command: 'package'
+      chartPath: '$(Build.SourcesDirectory)/helm'
+      save: true
+  
   - task: AzureCLI@2
     displayName: 'Login to Azure Container Registry'
     inputs:
@@ -55,23 +62,6 @@ steps:
     displayName: 'Helm Push to Container Registry'
     inputs:
       helmVersionToInstall: 'latest'
-  - task: HelmDeploy@0
-    displayName: 'Package the helm chart'
-    inputs:
-      command: 'package'
-      chartPath: '$(Build.SourcesDirectory)/helm'
-      save: true
   - bash: |
-        cat $(Build.SourcesDirectory)/bpdataservice.js
-  - task: HelmDeploy@0
-    displayName: 'Helm INSTALL'
-    inputs:
-      connectionType: 'Kubernetes Service Connection'
-      kubernetesServiceConnection: '52e7b636-9ce7-4f7d-be99-3bb1c59c1584'
-      command: 'install'
-      chartType: 'FilePath'
-      chartPath: '$(Build.SourcesDirectory)/helm'
-      chartVersion: '1.0.0'
-      force: true
-    #  releaseName: 'bpdataservice'
-
+      ls -l $(Build.ArtifactStagingDirectory)
+      helm push $(Build.ArtifactStagingDirectory)/bpdataservice-1.0.0.tgz oci://$(ACR.Name).azurecr.io/charts/
