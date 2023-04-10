@@ -64,4 +64,4 @@ steps:
       helmVersionToInstall: 'latest'
   - bash: |
       ls -l $(Build.ArtifactStagingDirectory)
-      helm push $(Build.ArtifactStagingDirectory)/bp_data_service-1.0.0.tgz oci://$(ACR.Name).azurecr.io/charts/
+      helm push $(Build.ArtifactStagingDirectory)/bpdataservice-1.0.0.tgz oci://$(ACR.Name).azurecr.io/charts/
