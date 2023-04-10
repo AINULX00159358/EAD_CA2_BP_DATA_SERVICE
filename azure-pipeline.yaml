@@ -46,7 +46,7 @@ steps:
     inputs:
       connectionType: 'Azure Resource Manager'
       # Azure Container Registry
-      azureSubscriptionForACR: '7263e463-da66-4888-a897-f34f5acea14b'
+      azureSubscriptionForACR: 'bc2aadcc-1517-44b8-9314-ea3f6c496a86'
       azureResourceGroupForACR: 'k8s-resource-group'
       azureContainerRegistry: 'ainhabacr.azurecr.io'
       # Commands
