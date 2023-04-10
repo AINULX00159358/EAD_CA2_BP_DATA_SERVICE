@@ -17,7 +17,7 @@ pool:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'bc2aadcc-1517-44b8-9314-ea3f6c496a86'
-  imageRepository: 'bpdataservice'
+  imageRepository: 'eadca2/bpdataservice'
   containerRegistry: 'ainhabacr.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   azureACRSubscription: '7263e463-da66-4888-a897-f34f5acea14b'
@@ -44,6 +44,7 @@ steps:
         $(tag)
   # Package and deploy Helm charts v0
   - task: HelmDeploy@0
+    displayName: 'Package the helm chart'
     inputs:
       command: 'package'
       chartPath: '$(Build.SourcesDirectory)/helm'
@@ -58,6 +59,7 @@ steps:
       inlineScript: |
         az acr login --name $(ACR.Name)
   - task: HelmInstaller@1
+    displayName: 'Helm Push to Container Registry'
     inputs:
       helmVersionToInstall: 'latest'
   - bash: |
