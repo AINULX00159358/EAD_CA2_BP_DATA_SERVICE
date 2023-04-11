@@ -50,3 +50,16 @@ app.post('/getRecords', (req, res) => {
       res.status(200).json(result);
   }));
 });
+
+app.post('/addRecords', (req, res) => {
+  console.log("/addRecords ", req.body.email);
+  let record = {
+    email: req.body.email,
+    systolic:  req.body.systolic,
+    diastolic:  req.body.diastolic,
+    category: "High",
+    timestamp: Date.now(),
+  };
+  collection.then(c => c.insertOne(record))
+      .then(result => res.json({'id': result.insertedId, 'ak':result.acknowledged }));
+});
