@@ -1,0 +1,52 @@
+pool:
+  name: Azure Pipelines
+  demands: npm
+
+steps:
+  - task: Npm@1
+    displayName: 'npm install'
+    inputs:
+      verbose: true
+    retryCountOnTaskFailure: 2
+
+  - task: DockerInstaller@0
+    displayName: 'Install Docker 17.09.0-ce'
+
+  - bash: |
+      echo 'running docker build'
+      docker run --name mongodb -p 27017:27017 -d mongo:latest
+    continueOnError: false
+    displayName: 'start Mongo Database'
+
+  - bash: |
+      echo 'running docker build'
+      docker build --no-cache --tag bpdataservice:CA2_TEST_V1 $(Build.SourcesDirectory)
+      echo 'running docker image'
+      docker run --name bpdataservice-test -p 43256:43256 -d -e "MONGO_CONN_URI=mongodb://localhost:27017" bpdataservice:CA2_TEST_V1
+    displayName: 'Cypress Test'
+    continueOnError: false
+
+  - bash: |
+      # Write your commands here
+      echo "Running Cypress Test"
+      ./node_modules/cypress/bin/cypress run --reporter junit --reporter-options "mochaFile=./cypress/results/TEST-bpdataservice-Result.xml,toConsole=true"
+      echo "Printing Report and workingDir in  $(System.DefaultWorkingDirectory)"
+      cat ./cypress/results/TEST-bpdataservice-Result.xml
+    displayName: 'Cypress Test'
+    continueOnError: true
+
+  - bash: |
+      # Write your commands here
+      docker stop bpdataservice-test || true && docker rm bpdataservice-test || true
+      docker stop mongodb || true && docker rm mongodb || true
+    displayName: 'kill running docker copy'
+    continueOnError: true
+    condition: always()
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results for EAD_CA2_BP_DATA_SERVICE'
+    inputs:
+      testResultsFiles: '**/TEST-*.xml'
+      failTaskOnFailedTests: true
+      testRunTitle: 'BP_DATA_SERVICE-E2E-TEST'
+

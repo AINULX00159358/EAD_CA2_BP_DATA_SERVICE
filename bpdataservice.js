@@ -32,7 +32,7 @@ collection.then(c => console.log("Mongo ", c.dbName , c.collectionName));
 
 
 app.listen(PORT, () => {
-  console.log("Server running 10-APR-23-17:47 on port "+ PORT);
+  console.log("Server started on port "+ PORT);
 });
 
 app.get('/health', (req, res) => {
