@@ -14,7 +14,7 @@ steps:
 
   - bash: |
       echo 'running docker build'
-      docker run --name mongodb -p 27017:27017 -d -net=bridge mongo:latest
+      docker run --name mongodb -p 27017:27017 -d --net=bridge mongo:latest
     continueOnError: false
     displayName: 'start Mongo Database'
 
