@@ -23,7 +23,7 @@ steps:
       docker build --no-cache --tag bpdataservice:CA2_TEST_V1 $(Build.SourcesDirectory)
       echo 'running docker image'
       docker run --name bpdataservice-test -p 43256:43256 -d -e "MONGO_CONN_URI=mongodb://localhost:27017" bpdataservice:CA2_TEST_V1
-    displayName: 'Cypress Test'
+    displayName: 'Start Application in Docker'
     continueOnError: false
 
   - bash: |
