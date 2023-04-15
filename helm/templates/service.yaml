@@ -22,6 +22,6 @@ metadata:
   name: mongodb-service
 spec:
   type: ExternalName
-  externalName: mongo-service.mongo.svc.cluster.local
+  externalName: mongodb-service.mongo.svc.cluster.local
   ports:
   - port: 27017
