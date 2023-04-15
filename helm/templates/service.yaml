@@ -15,3 +15,13 @@ spec:
     # Loadbalance traffic across Pods matching
     # this label selector
     app: bpdata
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  type: ExternalName
+  externalName: mongo-service.mongo.svc.cluster.local
+  ports:
+  - port: 27017
