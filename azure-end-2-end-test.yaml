@@ -1,6 +1,17 @@
+
 pool:
   name: Azure Pipelines
   demands: npm
+
+trigger: none
+
+name: DATA-E2E-TEST
+
+resources:
+  pipelines:
+    - pipeline: DATA-BUILD # Name of the pipeline resource.
+      source: DATA-BUILD # The name of the pipeline referenced by this pipeline resource.
+      trigger: true # Run app-ci pipeline when any run of security-lib-ci completes
 
 steps:
   - task: Npm@1
