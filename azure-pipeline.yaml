@@ -12,6 +12,8 @@
 trigger:
   - None
 
+name: DATA-BUILD
+
 pool:
   vmImage: ubuntu-latest
 
