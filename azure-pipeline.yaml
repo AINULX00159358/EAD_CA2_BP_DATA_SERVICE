@@ -14,6 +14,14 @@ trigger:
 
 name: DATA-BUILD
 
+
+resources:
+  pipelines:
+    - pipeline: DATA-E2E-TEST # Name of the pipeline resource.
+      source: DATA-E2E-TEST # The name of the pipeline referenced by this pipeline resource.
+      trigger: true # Run app-ci pipeline when any run of security-lib-ci completes
+
+
 pool:
   vmImage: ubuntu-latest
 
