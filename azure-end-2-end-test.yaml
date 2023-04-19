@@ -1,17 +1,12 @@
 
 pool:
-  name: Azure Pipelines
-  demands: npm
+  vmImage: ubuntu-latest
 
-trigger: none
+variables:
+  trivyVersion: 0.40.0
+  ScanResultsPath: trivyScan
 
 name: DATA-E2E-TEST
-
-resources:
-  pipelines:
-    - pipeline: DATA-BUILD # Name of the pipeline resource.
-      source: DATA-BUILD # The name of the pipeline referenced by this pipeline resource.
-      trigger: true # Run app-ci pipeline when any run of security-lib-ci completes
 
 steps:
   - task: Npm@1
@@ -39,6 +34,14 @@ steps:
     displayName: 'Start Application in Docker'
     continueOnError: false
 
+  - script: |
+       sudo apt-get install rpm
+        wget -q https://github.com/aquasecurity/trivy/releases/download/v$(trivyVersion)/trivy_$(trivyVersion)_Linux-64bit.deb
+        sudo dpkg -i trivy_$(trivyVersion)_Linux-64bit.deb
+        mkdir $(ScanResultsPath)
+        trivy image --scanners vuln,config,secret --severity CRITICAL,HIGH -o $(ScanResultsPath)/results.table bpdataservice:CA2_TEST_V1
+    displayName: 'Scan using Trivy scan'
+
   - bash: |
       # Write your commands here
       echo "Running Cypress Test"
@@ -63,3 +66,6 @@ steps:
       failTaskOnFailedTests: true
       testRunTitle: 'BP_DATA_SERVICE-E2E-TEST'
 
+  - task: PublishHtmlReport@1
+    inputs:
+      reportDir: '$(ScanResultsPath)/results.table'
