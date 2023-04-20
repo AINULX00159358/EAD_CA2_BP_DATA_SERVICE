@@ -25,12 +25,10 @@ steps:
     displayName: 'start Mongo Database'
 
   - bash: |
-      MONGO_IP=`docker container inspect -f '{{ .NetworkSettings.IPAddress }}' mongodb`
-      echo 'got mongodb ip address $MONGO_IP '
       echo 'running docker build'
       docker build --no-cache --tag bpdataservice:CA2_TEST_V1 $(Build.SourcesDirectory)
       echo 'running docker image'
-      docker run --name bpdataservice-test -p 43256:43256 -d -e "MONGO_CONN_URI=mongodb://$MONGO_IP:27017" bpdataservice:CA2_TEST_V1
+      docker run --name bpdataservice-test -p 43256:43256 -d -e "MONGO_CONN_URI=mongodb://$MONGOIP:27017" bpdataservice:CA2_TEST_V1
     displayName: 'Start Application in Docker'
     continueOnError: false
 
