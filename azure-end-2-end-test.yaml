@@ -16,28 +16,24 @@ steps:
     displayName: 'Install Docker 17.09.0-ce'
 
   - bash: |
-      echo 'running docker build'
-      docker run --name mongodb -p 27017:27017 -d --net=bridge mongo:latest
-      docker container inspect -f '{{ .NetworkSettings.IPAddress }}' mongodb > mongodb.url
-      export MONGOIP=`cat mongodb.url`
-      echo "Mongo IP $MONGOIP"
+      docker network create bpwebapp
+      docker run --name mongo --rm -p 27017:27017 -d --net bpwebapp mongo:latest
     continueOnError: false
     displayName: 'start Mongo Database'
 
   - bash: |
-      echo 'running docker build'
       docker build --no-cache --tag bpdataservice:CA2_TEST_V1 $(Build.SourcesDirectory)
       echo 'running docker image'
-      docker run --name bpdataservice-test -p 43256:43256 -d -e "MONGO_CONN_URI=mongodb://$MONGOIP:27017" bpdataservice:CA2_TEST_V1
+      docker run --name bpdataservice-test -p 43256:43256 -d -e "MONGO_CONN_URI=mongodb://mongo:27017" bpdataservice:CA2_TEST_V1
     displayName: 'Start Application in Docker'
     continueOnError: false
 
   - script: |
        sudo apt-get install rpm
-        wget -q https://github.com/aquasecurity/trivy/releases/download/v$(trivyVersion)/trivy_$(trivyVersion)_Linux-64bit.deb
-        sudo dpkg -i trivy_$(trivyVersion)_Linux-64bit.deb
-        mkdir $(ScanResultsPath)
-        trivy image --scanners vuln,config,secret --severity CRITICAL,HIGH -o $(ScanResultsPath)/results.table bpdataservice:CA2_TEST_V1
+       wget -q https://github.com/aquasecurity/trivy/releases/download/v$(trivyVersion)/trivy_$(trivyVersion)_Linux-64bit.deb
+       sudo dpkg -i trivy_$(trivyVersion)_Linux-64bit.deb
+       mkdir $(ScanResultsPath)
+       trivy image --scanners vuln,config,secret --severity CRITICAL,HIGH -o $(ScanResultsPath)/results.table bpdataservice:CA2_TEST_V1
     displayName: 'Scan using Trivy scan'
 
   - bash: |
@@ -53,6 +49,7 @@ steps:
       # Write your commands here
       docker stop bpdataservice-test || true && docker rm bpdataservice-test || true
       docker stop mongodb || true && docker rm mongodb || true
+      docker network rm bpwebapp
     displayName: 'kill running docker copy'
     continueOnError: true
     condition: always()
