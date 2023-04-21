@@ -49,8 +49,8 @@ steps:
       # Write your commands here
       docker stop bpdataservice-test || true && docker rm bpdataservice-test || true
       docker stop mongodb || true && docker rm mongodb || true
-      docker network rm bpwebapp
-    displayName: 'kill running docker copy'
+      docker system prune -a
+    displayName: 'kill running docker services'
     continueOnError: true
     condition: always()
 
