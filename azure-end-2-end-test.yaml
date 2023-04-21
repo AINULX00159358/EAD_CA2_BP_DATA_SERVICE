@@ -48,8 +48,7 @@ steps:
   - bash: |
       # Write your commands here
       docker stop bpdataservice-test || true && docker rm bpdataservice-test || true
-      docker stop mongodb || true && docker rm mongodb || true
-      docker system prune -a
+      docker stop mongo || true && docker rm mongo || true
     displayName: 'kill running docker services'
     continueOnError: true
     condition: always()
