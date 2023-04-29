@@ -17,7 +17,7 @@ steps:
 
   - bash: |
       echo 'running docker build'
-      docker run --name mongodb -p 27017:27017 -d --net=bridge mongo:latest
+      docker run --name mongodb -p 27017:27017 -d --net=bridge -e MONGO_INITDB_ROOT_USERNAME=zorok -e MONGO_INITDB_ROOT_PASSWORD=indiaNopels mongo:latest
     continueOnError: false
     displayName: 'start Mongo Database'
 
@@ -27,7 +27,7 @@ steps:
       echo 'running docker build'
       docker build --no-cache --tag bpdataservice:CA2_TEST_V1 $(Build.SourcesDirectory)
       echo 'running docker image'
-      docker run --name bpdataservice-test -p 43256:43256 -d -e "MONGO_CONN_URI=mongodb://$MONGO_IP:27017" bpdataservice:CA2_TEST_V1
+      docker run --name bpdataservice-test -p 43256:43256 -d -e "MONGO_CREDENTIALS=zorok:indiaNopels" -e "MONGO_CONN_URI=pwd@$MONGO_IP:27017" bpdataservice:CA2_TEST_V1
     displayName: 'Start Application in Docker'
     continueOnError: false
 

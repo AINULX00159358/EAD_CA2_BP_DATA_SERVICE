@@ -14,12 +14,24 @@ spec:
       labels:
         app: bpdata
     spec:
+      volumes:
+        - name: mongo-secrets
+          secret:
+            secretName: mongo-secrets
+            items:
+              - key: MONGO_CREDENTIAL
+                path: MONGO_CREDENTIAL
+                mode: 0444
       containers:
-        - image: ainhabacr.azurecr.io/eadca2/bpdataservice:v1
+        - image: bpdataservice:CA2_TEST_V1
           name: bpdataapp
-          imagePullPolicy: Always
+          imagePullPolicy: Never
           ports:
             - containerPort: 43256
           env:
-            - name: MONGO_CONN_URI
-              value: "mongodb://mongodb-service:27017"
+            - name: PROFILE
+              value: "production"
+          volumeMounts:
+            - name: mongo-secrets
+              mountPath: /etc/mongo-secrets
+              readOnly: true
