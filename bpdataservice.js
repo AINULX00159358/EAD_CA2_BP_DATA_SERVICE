@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 const express = require("express");
 const bodyParser = require('body-parser');
-const dbUri = require("./dbConnection.js")
+const dbConn = require("./dbConnection.js")
 
 
 const profile = process.env.PROFILE || "development";
@@ -26,7 +26,7 @@ const PORT = process.env.PORT || appConfig.exposedPort;
  * @type {Promise<Collection<Document>>}
  */
 
-const collection = dbUri.getCollection(appConfig);
+const collection = dbConn.getCollection(appConfig);
 collection.then(c => console.log("Successfully Connected to mongo database ", c.dbName , " and collection ", c.collectionName));
 
 

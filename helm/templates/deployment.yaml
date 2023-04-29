@@ -23,9 +23,9 @@ spec:
                 path: MONGO_CREDENTIAL
                 mode: 0444
       containers:
-        - image: bpdataservice:CA2_TEST_V1
+        - image: ainhabacr.azurecr.io/eadca2/bpdataservice:v1
           name: bpdataapp
-          imagePullPolicy: Never
+          imagePullPolicy: Always
           ports:
             - containerPort: 43256
           env:
