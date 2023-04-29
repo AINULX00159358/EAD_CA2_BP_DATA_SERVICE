@@ -1,21 +1,21 @@
 {
-    "config_id": "development",
-    "app_name": "BP Data Service",
+  "app_name": "BP Data Service",
   "development": {
+    "configID": "development",
     "exposedPort": "43256",
       "database": {
         "name": "bp_data",
         "collection": "db_record",
-        "credentials": "zorok:indiaNopels",
-        "connectionUri": "localhost:27017/?authMechanism=SCRAM-SHA-1"
+        "connectionUrl": "mongodb://zorok:indiaNopels@localhost:27017/?authMechanism=SCRAM-SHA-1"
       }
 	},
   "production": {
+    "configID": "production",
     "exposedPort": "43256",
     "database": {
       "name": "bp_data",
       "collection": "db_record",
-      "connectionUri": "mongodb-service:27017/?authMechanism=SCRAM-SHA-1"
+      "connectionUrl": "mongodb://CREDENTIALS@mongodb-service:27017/?authMechanism=SCRAM-SHA-1"
     }
   }
 }
